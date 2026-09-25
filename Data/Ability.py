@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 class Ability_Type(Enum):
+    """All types of abilities in the Wrath&Glory ruleset"""
     BATTLECRY = 0
     ACTION = 1
     RUIN = 2
@@ -14,6 +15,7 @@ class Ability_Type(Enum):
 
 @dataclass
 class Ability:
+    """Represents an ability in the Wrath&Glory ruleset"""
     ability_type: Ability_Type
     name: str
     text: str

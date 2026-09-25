@@ -22,9 +22,11 @@ map_skill_to_attribute = {
     "tech" : Attribute.INTELLIGENCE,
     "weapon_skill" : Attribute.INITIATIVE
 }
+"""Maps which skill is linked to what attribute"""
 
 @dataclass
 class Skills:
+    """Represents a skill in the Wrath&Glory ruleset"""
     default : int
     athletics : int = 0
     awareness : int = 0

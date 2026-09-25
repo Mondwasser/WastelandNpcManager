@@ -5,6 +5,7 @@ from Data.Weapon import Weapon
 
 @dataclass
 class NPC:
+    """Represents a NPC in the Wrath&Glory ruleset with homebrew additions"""
     name : str
     strength : int
     toughness : int

@@ -42,7 +42,7 @@ class NotionClient:
         data = response.json()
         return data
 
-    def add_page(self, database_id, data: dict):
+    def add_page(self, database_id, properties: dict):
         """ Add a new page to the database. """
         url = "https://api.notion.com/v1/pages"
 
@@ -51,13 +51,46 @@ class NotionClient:
                 "database_id": database_id,
                 "type": "database_id"
             },
-            "properties": data
+            "properties": properties
         }
 
         response = requests.post(url, json=payload, headers=self.headers)
 
         json_response = response.json()
 
+        if (json_response["object"] == "error"):
+            print(json_response["code"])
+            print("\n")
+            print(json_response["message"])
+
+        return json_response
+
+    def update_page(self, page_id, properties: dict):
+        """ Update a page in Notion. """
+        url = f"https://api.notion.com/v1/pages/{page_id}"
+
+        payload = { "properties": properties }
+
+        response = requests.patch(url, json=payload, headers=self.headers)
+
+        json_response = response.json()
+
+        if (json_response["object"] == "error"):
+            print(json_response["code"])
+            print("\n")
+            print(json_response["message"])
+
+        return json_response
+
+    def delete_page(self, page_id):
+        """ Delete the page with the given id. """
+        url = f"https://api.notion.com/v1/pages/{page_id}"
+
+        payload = {"in_trash": True}
+
+        response = requests.patch(url, json=payload, headers=self.headers)
+
+        json_response = response.json()
         if (json_response["object"] == "error"):
             print(json_response["code"])
             print("\n")

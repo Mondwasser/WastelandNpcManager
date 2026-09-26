@@ -32,3 +32,16 @@ class WeaponDB:
                }
 
         self.client.add_page(self.db_id, data)
+
+    def update_weapon(self, weapon):
+        """Updates weapon on Notion"""
+        data = {
+            "Name": asdict(TitleProperty(weapon.name)),
+            "weapon": asdict(RichTextProperty(weapon.to_json()))
+        }
+        self.client.update_page(weapon.id, data)
+
+    def delete_weapon(self, weapon: Weapon):
+        """Deletes a weapon from Notion"""
+
+        self.client.delete_page(weapon.id)

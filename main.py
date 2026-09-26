@@ -65,6 +65,13 @@ def test_dicting():
 
 
 print("Running...")
-data = test_add_weapon()
+
+client = WeaponDB()
+data = client.get_all_weapons()
+print(f"{len(data)} weapons found")
+
+client.delete_weapon(data[0])
+
+
 
 

@@ -25,10 +25,6 @@ class NotionClient:
 
         data = response.json()
 
-        # TODO remove
-        with open('D:/Temp/Jsons/payloadGet.json', 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=4)
-
         results = data["results"]
         while data["has_more"] and get_all:
             payload = {"page_size": page_size, "start_cursor": data["next_cursor"]}
@@ -42,10 +38,6 @@ class NotionClient:
     def get_page(self, database_id, page_id):
         url = f"https://api.notion.com/v1/pages/{page_id}"
         response = requests.get(url, headers=self.headers)
-
-        # TODO remove
-        with open('D:/Temp/Jsons/payloadGetPage.json', 'w', encoding='utf-8') as f:
-            f.write(response.text)
 
         data = response.json()
         return data
@@ -61,18 +53,9 @@ class NotionClient:
             "properties": data
         }
 
-        # TODO remove
-        with open('D:/Temp/Jsons/payloadBefore.json', 'w', encoding='utf-8') as f:
-            json.dump(payload, f, ensure_ascii=False, indent=4)
-
         response = requests.post(url, json=payload, headers=self.headers)
 
         json_response = response.json()
-
-        # TODO remove
-        with open('D:/Temp/Jsons/payloadResponse.json', 'w', encoding='utf-8') as f:
-            json.dump(json_response, f, ensure_ascii=False, indent=4)
-
 
         if (json_response["object"] == "error"):
             print(json_response["code"])

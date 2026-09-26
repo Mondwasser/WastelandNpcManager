@@ -46,3 +46,27 @@ class Skills:
     survival : int = 0
     tech : int = 0
     weapon_skill : int = 0
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            default = data["default"],
+            athletics = data["athletics"],
+            awareness = data["awareness"],
+            ballistic = data["ballistic"],
+            cunning = data["cunning"],
+            deception = data["deception"],
+            insight = data["insight"],
+            intimidation = data["intimidation"],
+            investigation = data["investigation"],
+            leadership = data["leadership"],
+            medicae = data["medicae"],
+            persuasion = data["persuasion"],
+            pilot = data["pilot"],
+            psychic_mastery = data["psychic_mastery"],
+            scholar = data["scholar"],
+            stealth = data["stealth"],
+            survival = data["survival"],
+            tech = data["tech"],
+            weapon_skill= data["weapon_skill"]
+        )

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from DatabaseManagement.RichText import RichText
+from DatabaseManagement.Notion.RichText import RichText
 
 @dataclass
 class RichTextProperty:

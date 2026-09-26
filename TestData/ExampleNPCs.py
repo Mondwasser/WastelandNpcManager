@@ -1,7 +1,7 @@
 from Data.Ability import Ability, Ability_Type
 from Data.NPC import NPC
 from Data.Skills import Skills
-from Data.Weapon import Weapon, Range
+from Data.Weapon import Weapon, ShootingRange, Rarity
 
 KER = NPC(
     name = "Ker",
@@ -49,8 +49,10 @@ KER = NPC(
             is_strength_based=False,
             armor_penetration= 0,
             salvo= 1,
-            range = Range(6,12,18),
-            traits = [ "Pistol" ]
+            range = ShootingRange(6,12,18),
+            traits = [ "Pistol" ],
+            rarity= Rarity.VERY_RARE,
+            value= 4
         ),
         Weapon(
             name = "Shock Maul",
@@ -59,8 +61,10 @@ KER = NPC(
             is_strength_based=True,
             armor_penetration= 0,
             salvo= 0,
-            range = Range(),
-            traits = [ "Agonising", "Brutal" ]
+            range = None,
+            traits = [ "Agonising", "Brutal" ],
+            rarity= Rarity.VERY_RARE,
+            value= 4
         )
     ]
 

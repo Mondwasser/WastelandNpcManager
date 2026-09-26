@@ -11,7 +11,9 @@ class Range:
     @classmethod
     def cls_from_dict(cls, data: dict):
         """Creates an instance of the correct subclass from a dict"""
-        if data is None or not data.__contains__("class_name"):
+        if data is None:
+            return None
+        elif not data.__contains__("class_name"):
             raise TypeError(f"Unrecognized data type: {data}")
         match data["class_name"]:
             case "ShootingRange":

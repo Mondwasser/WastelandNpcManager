@@ -1,7 +1,7 @@
 from dataclasses import asdict
 from Data.Weapon import Weapon
-from DatabaseManagement.NotionClient import NotionClient
-from DatabaseManagement.NotionProperties import TitleProperty, RichTextProperty
+from DatabaseManagement.Notion.NotionClient import NotionClient
+from DatabaseManagement.Notion.NotionProperties import TitleProperty, RichTextProperty
 import json
 
 class WeaponDB:
@@ -10,7 +10,7 @@ class WeaponDB:
         self.client = NotionClient()
         self.db_id = "3e67e8e3bc99800ca62ec501c9b02016"
 
-    def get_all_weapons(self):
+    def get_all(self):
         """Gets all weapons stored in Notion"""
         data = self.client.get_pages(self.db_id)
         weapons = []
@@ -24,7 +24,7 @@ class WeaponDB:
 
         return weapons
 
-    def add_new_weapon(self, weapon: Weapon):
+    def add_new(self, weapon: Weapon):
         """Adds a new weapon to Notion"""
         data = {
                 "Name" : asdict(TitleProperty(weapon.name)),
@@ -33,7 +33,7 @@ class WeaponDB:
 
         self.client.add_page(self.db_id, data)
 
-    def update_weapon(self, weapon):
+    def update(self, weapon):
         """Updates weapon on Notion"""
         data = {
             "Name": asdict(TitleProperty(weapon.name)),
@@ -41,7 +41,6 @@ class WeaponDB:
         }
         self.client.update_page(weapon.id, data)
 
-    def delete_weapon(self, weapon: Weapon):
+    def delete(self, weapon: Weapon):
         """Deletes a weapon from Notion"""
-
         self.client.delete_page(weapon.id)

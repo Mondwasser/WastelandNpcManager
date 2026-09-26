@@ -3,6 +3,7 @@ from DatabaseManagement.RichText import RichText
 
 @dataclass
 class RichTextProperty:
+    """Represents a RichText property in Notion"""
     rich_text: list[RichText]
     type: str = "rich_text"
 
@@ -11,6 +12,7 @@ class RichTextProperty:
 
 @dataclass
 class TitleProperty:
+    """Represents a Title property in Notion"""
     title: list[RichText]
     type: str = "title"
 

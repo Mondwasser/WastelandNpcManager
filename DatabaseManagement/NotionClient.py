@@ -2,7 +2,6 @@ import json
 import os
 import requests
 
-
 class NotionClient:
     """Client for Notion API"""
 
@@ -36,6 +35,7 @@ class NotionClient:
         return results
 
     def get_page(self, database_id, page_id):
+        """ Get the page with the given id. """
         url = f"https://api.notion.com/v1/pages/{page_id}"
         response = requests.get(url, headers=self.headers)
 
@@ -43,6 +43,7 @@ class NotionClient:
         return data
 
     def add_page(self, database_id, data: dict):
+        """ Add a new page to the database. """
         url = "https://api.notion.com/v1/pages"
 
         payload = {

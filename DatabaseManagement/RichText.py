@@ -1,13 +1,14 @@
 from dataclasses import dataclass, field
 
-
 @dataclass
 class Text:
+    """Represents a Text field in Notion"""
     content: str
     link: str = None
 
 @dataclass()
 class Annotations:
+    """Represents a Annotations field in Notion"""
     bold: bool = False
     italic: bool = False
     strikethrough: bool = False
@@ -17,6 +18,7 @@ class Annotations:
 
 @dataclass
 class RichText:
+    """Represents a RichText field in Notion"""
 
     text: Text = field(default_factory=Text)
     annotations: Annotations = field(default_factory=Annotations)

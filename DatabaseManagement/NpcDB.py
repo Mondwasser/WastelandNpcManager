@@ -43,3 +43,12 @@ class NpcDB:
     def delete(self, npc: NPC):
         """Deletes a npc from Notion"""
         self.client.delete_page(npc.id)
+
+    def attach_picture(self, npc: NPC):
+        """Attaches npc from Notion"""
+        #TODO
+        pass
+
+    def upload_picture(self, QPixmap) -> str:
+        #TODO
+        pass

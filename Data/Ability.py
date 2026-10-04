@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
-class Ability_Type(str,Enum):
+class Ability_Type(StrEnum):
     """All types of abilities in the Wrath&Glory ruleset"""
     BATTLECRY = "Battlecry"
     ACTION = "Action"
@@ -21,7 +21,7 @@ class Ability:
     text: str
 
     @classmethod
-    def from_dict(cls, data: dict):
+    def from_dict(cls, data: dict) -> Ability:
         return cls(
             ability_type=data["ability_type"],
             name=data["name"],

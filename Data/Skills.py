@@ -48,7 +48,8 @@ class Skills:
     weapon_skill : int = 0
 
     @classmethod
-    def from_dict(cls, data: dict):
+    def from_dict(cls, data: dict) -> Skills:
+        """Creates a Skills object from a dictionary"""
         return cls(
             default = data["default"],
             athletics = data["athletics"],

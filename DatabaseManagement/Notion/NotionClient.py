@@ -1,5 +1,7 @@
 import json
 import os
+from typing import Any
+
 import requests
 
 class NotionClient:
@@ -12,7 +14,7 @@ class NotionClient:
             "Notion-Version": "2022-02-22",
         }
 
-    def get_pages(self, database_id, num_pages=None):
+    def get_pages(self, database_id, num_pages=None) -> dict:
         """ If num_pages is None, get all pages, otherwise just the defined number. """
         url = f"https://api.notion.com/v1/databases/{database_id}/query"
 
@@ -34,7 +36,7 @@ class NotionClient:
 
         return results
 
-    def get_page(self, database_id, page_id):
+    def get_page(self, database_id, page_id) -> Any:
         """ Get the page with the given id. """
         url = f"https://api.notion.com/v1/pages/{page_id}"
         response = requests.get(url, headers=self.headers)
@@ -42,7 +44,7 @@ class NotionClient:
         data = response.json()
         return data
 
-    def add_page(self, database_id, properties: dict):
+    def add_page(self, database_id, properties: dict) -> Any:
         """ Add a new page to the database. """
         url = "https://api.notion.com/v1/pages"
 
@@ -65,7 +67,7 @@ class NotionClient:
 
         return json_response
 
-    def update_page(self, page_id, properties: dict):
+    def update_page(self, page_id, properties: dict)-> Any:
         """ Update a page in Notion. """
         url = f"https://api.notion.com/v1/pages/{page_id}"
 
@@ -82,7 +84,7 @@ class NotionClient:
 
         return json_response
 
-    def delete_page(self, page_id):
+    def delete_page(self, page_id)-> Any:
         """ Delete the page with the given id. """
         url = f"https://api.notion.com/v1/pages/{page_id}"
 

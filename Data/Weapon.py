@@ -5,11 +5,11 @@ import json
 @dataclass
 class Range:
     """Base class for shooting and throwing ranges"""
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return asdict(self)
 
     @classmethod
-    def cls_from_dict(cls, data: dict):
+    def cls_from_dict(cls, data: dict) -> Range:
         """Creates an instance of the correct subclass from a dict"""
         if data is None:
             return None
@@ -19,7 +19,7 @@ class Range:
             case "ShootingRange":
                 return ShootingRange.cls_from_dict(data)
             case "ThrowingRange":
-                return ThrowingRange.cls_from_dict(data)
+                return MeleeRange.cls_from_dict(data)
             case _:
                 raise TypeError(f"Unrecognized data type: {data}")
 
@@ -32,23 +32,27 @@ class ShootingRange(Range):
     class_name : str = field(default="ShootingRange", init=False)
 
     @classmethod
-    def cls_from_dict(cls, data: dict):
+    def cls_from_dict(cls, data: dict) -> ShootingRange:
         """Creates an instance from a dict"""
         return cls(
-        short = data["short"],
-        medium = data["medium"],
-        long = data["long"])
+            short = data["short"],
+            medium = data["medium"],
+            long = data["long"])
 
 @dataclass
-class ThrowingRange(Range):
-    """Class representing ranges for throwing"""
-    strength_multiplier : int
-    class_name : str = field(default="ThrowingRange", init=False)
+class MeleeRange(Range):
+    """Class representing ranges for melee with option to be thwrowable"""
+    strength_multiplier_for_throw : int = field(default=0)
+    """If value is 0, weapon can not be thrown"""
+    melee_range : int = field(default=1)
+    class_name : str = field(default="MeleeRange", init=False)
 
     @classmethod
-    def cls_from_dict(cls, data: dict):
+    def cls_from_dict(cls, data: dict) -> MeleeRange:
         """Creates an instance from a dict"""
-        return  cls(strength_multiplier= data["strength_multiplier"])
+        return  cls(
+            strength_multiplier_for_throw= data["strength_multiplier"],
+            melee_range = data["melee_range"])
 
 class Rarity(str,Enum):
     """Class representing rarity"""
@@ -62,19 +66,21 @@ class Rarity(str,Enum):
 class Weapon:
     """Represents a weapon in the Wrath&Glory ruleset"""
     name : str
+    is_melee : bool
+    group : str
     damage : int
     is_strength_based : bool
-    range : Range
     extra_dice : int
     armor_penetration : int
     salvo : int
     value : int
     rarity : Rarity
+    range : Range = field(default_factory=Range)
     id : str = field(default_factory=str)
     traits : list[str] = field(default_factory=list)
 
     @classmethod
-    def from_dict(cls, data: dict):
+    def from_dict(cls, data: dict) -> Weapon:
         """Creates an instance from a dict"""
         return cls(
             name = data["name"],
@@ -90,7 +96,7 @@ class Weapon:
             traits = data["traits"]
         )
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         """Turns class into a dict"""
         return {
             "name" : self.name,

@@ -18,6 +18,8 @@ class TabTreeModel():
                 self.grouped_data.update({item.group: [item]})
             else:
                 self.grouped_data[item.group].append(item)
+
+
 class GroupItem(QListWidgetItem):
     def __init__(self, group_name):
         super().__init__(group_name)
@@ -32,8 +34,8 @@ class GroupItem(QListWidgetItem):
     def all_children_hidden(self):
         for child in self.childItems:
             if not child.isHidden():
-                return True
-        return False
+                return False
+        return True
 
 class TreeItem(QListWidgetItem):
 

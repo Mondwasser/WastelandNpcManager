@@ -4,6 +4,7 @@ from dataclasses import dataclass, field, asdict
 from PySide6.QtGui import QPixmap
 
 from Data.Ability import Ability
+from Data.Attributes import Attribute
 from Data.Skills import Skills, map_skill_to_attribute
 from Data.Weapon import Weapon
 
@@ -55,6 +56,9 @@ class NPC:
         if not skill_name in map_skill_to_attribute:
             raise InvalidSkillNameException(skill_name)
 
+        if map_skill_to_attribute[skill_name] == Attribute.NONE:
+            return  getattr(self.skills, skill_name)
+
         return getattr(self, map_skill_to_attribute[skill_name]) + getattr(self.skills, skill_name)
 
     @classmethod
@@ -71,10 +75,10 @@ class NPC:
             fellowship=data["fellowship"],
             resilience=data["resilience"],
             armor=data["armor"],
-            armor_name=data["armour_name"],
+            armor_name=data["armor_name"],
             defense=data["defense"],
             wounds=data["wounds"],
-            shock=data["shocks"],
+            shock=data["shock"],
             determination=data["determination"],
             conviction=data["conviction"],
             resolve=data["resolve"],

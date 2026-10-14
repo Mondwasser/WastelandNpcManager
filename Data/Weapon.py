@@ -18,7 +18,7 @@ class Range:
         match data["class_name"]:
             case "ShootingRange":
                 return ShootingRange.cls_from_dict(data)
-            case "ThrowingRange":
+            case "MeleeRange":
                 return MeleeRange.cls_from_dict(data)
             case _:
                 raise TypeError(f"Unrecognized data type: {data}")
@@ -51,7 +51,7 @@ class MeleeRange(Range):
     def cls_from_dict(cls, data: dict) -> MeleeRange:
         """Creates an instance from a dict"""
         return  cls(
-            strength_multiplier_for_throw= data["strength_multiplier"],
+            strength_multiplier_for_throw= data["strength_multiplier_for_throw"],
             melee_range = data["melee_range"])
 
 class Rarity(str,Enum):
@@ -84,6 +84,8 @@ class Weapon:
         """Creates an instance from a dict"""
         return cls(
             name = data["name"],
+            group= data["group"],
+            is_melee = data["is_melee"],
             damage = data["damage"],
             is_strength_based = data["is_strength_based"],
             range = Range.cls_from_dict(data["range"]),
@@ -100,6 +102,8 @@ class Weapon:
         """Turns class into a dict"""
         return {
             "name" : self.name,
+            "group" : self.group,
+            "is_melee" : self.is_melee,
             "damage" : self.damage,
             "is_strength_based" : self.is_strength_based,
             "range" : self.range.to_dict(),

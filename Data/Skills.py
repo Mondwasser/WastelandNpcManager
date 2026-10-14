@@ -27,7 +27,7 @@ map_skill_to_attribute = {
 @dataclass
 class Skills:
     """Represents a skill in the Wrath&Glory ruleset"""
-    default : int
+    default : int = 0
     athletics : int = 0
     awareness : int = 0
     ballistic : int = 0

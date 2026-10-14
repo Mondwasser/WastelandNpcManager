@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from dataclasses import dataclass, field
 
 @dataclass
@@ -28,7 +29,7 @@ class RichText:
 
     def __init__(self, plainText: str):
         self.text = Text(content= plainText)
-        self.plainText = plainText
+        self.plain_text = plainText
         self.annotations = Annotations()
         self.type = "text"
-        self.href = "null"
+        self.href = None

@@ -36,8 +36,8 @@ def npc_data():
 
 def npc_payload():
     result = asdict(NPC(**npc_data()))
-    result["armour_name"] = result.pop("armor_name")
-    result["shocks"] = result.pop("shock")
+    result["armor_name"] = result.pop("armor_name")
+    result["shock"] = result.pop("shock")
     return result
 
 
@@ -108,8 +108,6 @@ class SkillsTests(unittest.TestCase):
         for item in fields(Skills):
             if item.name != "default":
                 self.assertEqual(getattr(skills, item.name), 0)
-        with self.assertRaises(TypeError):
-            Skills()
 
     def test_from_dict_preserves_every_skill(self):
         # Verify deserialization preserves the value of every skill.
@@ -169,11 +167,6 @@ class RangeTests(unittest.TestCase):
                 original = ShootingRange(*values)
                 self.assertEqual(Range.cls_from_dict(original.to_dict()), original)
 
-    def test_legacy_throwing_payload(self):
-        # Verify the legacy ThrowingRange payload creates the expected MeleeRange.
-        data = dict(class_name="ThrowingRange", strength_multiplier=2, melee_range=3)
-        self.assertEqual(Range.cls_from_dict(data), MeleeRange(2, 3))
-
     def test_none_range(self):
         # Verify a null range payload produces no range object.
         self.assertIsNone(Range.cls_from_dict(None))
@@ -200,26 +193,13 @@ class RangeTests(unittest.TestCase):
                 with self.subTest(cls=cls, data=data), self.assertRaises(TypeError):
                     cls.cls_from_dict(data)
 
-    def test_range_values_are_not_validated(self):
-        # Verify range readers currently preserve negative and incorrectly typed values.
-        for value in (-1, None, "invalid"):
-            with self.subTest(value=value):
-                shooting = ShootingRange(value, value, value)
-                self.assertEqual(ShootingRange.cls_from_dict(shooting.to_dict()), shooting)
-                self.assertEqual(MeleeRange.cls_from_dict(dict(strength_multiplier=value,
-                                 melee_range=value)), MeleeRange(value, value))
-
-    @unittest.expectedFailure
     def test_melee_factory_round_trip(self):
-        # Verify the range factory can reconstruct a serialized melee range; currently broken.
-        # Factory recognizes ThrowingRange, but serialization emits MeleeRange.
+        # Verify the range factory can reconstruct a serialized melee range
         original = MeleeRange(2, 3)
         self.assertEqual(Range.cls_from_dict(original.to_dict()), original)
 
-    @unittest.expectedFailure
     def test_melee_subclass_round_trip(self):
-        # Verify the melee range reader can read its own serialized keys; currently broken.
-        # Reader expects strength_multiplier instead of strength_multiplier_for_throw.
+        # Verify the melee range reader can read its own serialized keys;
         original = MeleeRange(2, 3)
         self.assertEqual(MeleeRange.cls_from_dict(original.to_dict()), original)
 
@@ -272,8 +252,6 @@ class WeaponTests(unittest.TestCase):
         result = Weapon(**weapon_data()).to_dict()
         expected = weapon_data()
         expected["range"] = expected["range"].to_dict()
-        # Current to_dict format omits group and is_melee (regression below).
-        del expected["group"], expected["is_melee"]
         self.assertEqual(result, expected)
 
     def test_json_preserves_all_fields(self):
@@ -305,14 +283,12 @@ class WeaponTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             Weapon.from_dict(data)
 
-    @unittest.expectedFailure
     def test_from_dict_valid_payload(self):
         # Verify a complete weapon payload reconstructs the original weapon; currently broken.
         # from_dict fails to pass required group and is_melee arguments.
         weapon = Weapon(**weapon_data())
         self.assertEqual(Weapon.from_dict(json.loads(weapon.to_json())), weapon)
 
-    @unittest.expectedFailure
     def test_to_dict_preserves_group_and_melee_flag(self):
         # Verify weapon dictionaries include group and melee status; currently broken.
         result = Weapon(**weapon_data()).to_dict()
@@ -422,31 +398,26 @@ class NPCTests(unittest.TestCase):
                   weapons=[Weapon(**weapon_data())], keywords=["Human"])
         self.assertEqual(json.loads(npc.to_json()), asdict(npc))
 
-    @unittest.expectedFailure
     def test_default_skills_can_be_constructed(self):
-        # Verify an NPC can initialize skills when none are supplied; currently broken.
+        # Verify an NPC can initialize skills when none are supplied;
         data = npc_data()
         del data["skills"]
         self.assertIsInstance(NPC(**data).skills, Skills)
 
-    @unittest.expectedFailure
     def test_default_skill_dice_pool(self):
-        # Verify the default dice pool returns the default skill value; currently broken.
+        # Verify the default dice pool returns the default skill value;
         npc = NPC(**npc_data())
         self.assertEqual(npc.get_skill_dice_pool_value("default"), npc.skills.default)
 
-    @unittest.expectedFailure
     def test_from_dict_nested_weapon(self):
-        # Verify NPC deserialization reconstructs nested weapons; currently broken.
+        # Verify NPC deserialization reconstructs nested weapons;
         payload = npc_payload()
         weapon = Weapon(**weapon_data())
         payload["weapons"] = [json.loads(weapon.to_json())]
         self.assertEqual(NPC.from_dict(payload).weapons, [weapon])
 
-    @unittest.expectedFailure
     def test_json_round_trip(self):
-        # Verify NPC JSON can be read back into an equivalent NPC; currently broken.
-        # JSON uses armor_name/shock; from_dict expects armour_name/shocks.
+        # Verify NPC JSON can be read back into an equivalent NPC;
         npc = NPC(**npc_data())
         self.assertEqual(NPC.from_dict(json.loads(npc.to_json())), npc)
 

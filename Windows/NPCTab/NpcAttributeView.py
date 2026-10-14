@@ -117,7 +117,7 @@ class NpcSubAttributesView(QWidget):
         self.size_box.addItems(npc_sizes)
         self.size_box.setEnabled(False)
         self.size_box.setEditable(False)
-        self.size_box.currentIndexChanged.connect(partial(self.attribute_changed, "size"))
+        self.size_box.currentTextChanged.connect(partial(self.attribute_changed, "size"))
 
         if model.size in npc_sizes:
             self.size_box.setCurrentIndex(npc_sizes.index(model.size))

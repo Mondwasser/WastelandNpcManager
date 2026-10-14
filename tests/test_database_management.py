@@ -207,7 +207,6 @@ class WeaponDBTests(RepositoryChecks, OfflineTestCase):
     property_name = "weapon"
     database_id = "3e67e8e3bc99800ca62ec501c9b02016"
 
-    @unittest.expectedFailure
     def test_get_all_with_real_model_deserialization(self):
         # Verify valid stored weapons deserialize; currently blocked by Weapon.from_dict's missing arguments.
         model = self.make_model()
@@ -428,7 +427,7 @@ class NotionPropertyTests(OfflineTestCase):
             with self.subTest(value=value):
                 rich = RichText(value)
                 self.assertEqual(rich.text.content, value)
-                self.assertEqual(rich.plainText, value)
+                self.assertEqual(rich.plain_text, value)
                 self.assertEqual(rich.type, "text")
                 self.assertEqual(rich.annotations, Annotations())
 
@@ -474,14 +473,12 @@ class NotionPropertyTests(OfflineTestCase):
                 self.assertEqual(RichTextProperty(value).rich_text[0].text.content, value)
         self.assertEqual(Annotations(bold="invalid", color=123).bold, "invalid")
 
-    @unittest.expectedFailure
     def test_rich_text_serialized_plain_text(self):
-        # Verify serialized plain_text matches content; currently __init__ assigns plainText instead.
+        # Verify serialized plain_text matches content;
         self.assertEqual(asdict(RichText("Example"))["plain_text"], "Example")
 
-    @unittest.expectedFailure
     def test_rich_text_missing_href_is_null(self):
-        # Verify an absent href serializes as JSON null; currently it is the literal string "null".
+        # Verify an absent href serializes as JSON null;
         self.assertIsNone(asdict(RichText("Example"))["href"])
 
 

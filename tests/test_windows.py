@@ -148,9 +148,8 @@ class ListViewTests(QtTestCase):
         view.tree_item_name_changed("Veteran")
         self.assertEqual(view.list_widget.currentItem().text(), "  Veteran")
 
-    @unittest.expectedFailure
     def test_all_children_hidden_semantics(self):
-        # Verify the method reports true when all children are hidden; its current result is inverted.
+        # Verify the method reports true when all children are hidden;
         owner = self.own(QListWidget())
         group = GroupItem("Group")
         child = TreeItem(SimpleNamespace(name="Child"))
@@ -249,9 +248,8 @@ class AttributeViewTests(QtTestCase):
         self.assertEqual([view.size_box.itemText(i) for i in range(view.size_box.count())], npc_sizes)
         self.assertEqual(view.size_box.currentText(), "Avg")
 
-    @unittest.expectedFailure
     def test_size_change_preserves_string(self):
-        # Verify selecting a size stores its text in the NPC; currently the integer index is stored.
+        # Verify selecting a size stores its text in the NPC
         model = make_npc()
         view = self.own(NpcSubAttributesView(model, 500))
         view.size_box.setCurrentIndex(4)
